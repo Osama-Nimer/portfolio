@@ -84,7 +84,7 @@ export function Navbar() {
             </button>
 
             {/* Auth */}
-            {isLoggedIn ? (
+            {/* {isLoggedIn ? (
               <Link href={ROUTES.DASHBOARD}>
                 <Button variant="outline" size="sm" className="hidden sm:inline-flex bg-transparent">
                   <User className="mr-2 h-4 w-4" />
@@ -97,7 +97,7 @@ export function Navbar() {
                   Login
                 </Button>
               </Link>
-            )}
+            )} */}
 
             {/* Mobile menu button */}
             <button
