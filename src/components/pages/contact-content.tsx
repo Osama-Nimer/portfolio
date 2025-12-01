@@ -101,7 +101,7 @@ export function ContactContent() {
                 <div>
                   <p className="font-medium text-foreground">Email</p>
                   <a href="mailto:hello@example.com" className="text-muted-foreground hover:text-main">
-                    hello@example.com
+                    osamanimer6@gmail.com
                   </a>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export function ContactContent() {
                 <div>
                   <p className="font-medium text-foreground">Phone</p>
                   <a href="tel:+1234567890" className="text-muted-foreground hover:text-main">
-                    +1 (234) 567-890
+                    +962 7 9698 3276
                   </a>
                 </div>
               </div>
@@ -124,7 +124,7 @@ export function ContactContent() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">Location</p>
-                  <p className="text-muted-foreground">San Francisco, CA</p>
+                  <p className="text-muted-foreground">Amman Jordan</p>
                 </div>
               </div>
             </div>
