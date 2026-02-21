@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Github, Linkedin, Twitter, Mail } from "lucide-react"
+import { Github, Linkedin, Instagram , Mail } from "lucide-react"
 import { Container } from "@/src/components/ui/container"
 import { ROUTES } from "@/src/utils/constants"
 
@@ -11,10 +11,10 @@ const footerLinks = [
 ]
 
 const socialLinks = [
-  { href: "https://github.com", icon: Github, label: "GitHub" },
-  { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
-  { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-  { href: "mailto:hello@example.com", icon: Mail, label: "Email" },
+  { href: "https://github.com/Osama-Nimer", icon: Github, label: "GitHub" },
+  { href: "https://www.linkedin.com/in/osama-nimer/", icon: Linkedin, label: "LinkedIn" },
+  { href: "https://www.instagram.com/osama_niimer/", icon: Instagram, label: "Instagram" },
+  { href: "mailto:osamanimer6@gmail.com", icon: Mail, label: "Email" },
 ]
 
 export function Footer() {
@@ -28,7 +28,7 @@ export function Footer() {
             {/* Brand */}
             <div>
               <Link href={ROUTES.HOME} className="text-2xl font-bold text-main">
-                Portfolio
+                Osama Nimer
               </Link>
               <p className="mt-4 text-sm text-muted-foreground max-w-xs">
                 Building digital experiences with passion and precision. Let&apos;s create something amazing together.
@@ -71,7 +71,7 @@ export function Footer() {
 
           {/* Copyright */}
           <div className="mt-12 pt-8 border-t border-border text-center">
-            <p className="text-sm text-muted-foreground">&copy; {currentYear} Portfolio. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">&copy;{currentYear} Osama Nimer. All rights reserved.</p>
           </div>
         </div>
       </Container>

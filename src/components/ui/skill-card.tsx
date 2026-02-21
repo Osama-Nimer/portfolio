@@ -8,7 +8,7 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ skill, className }: SkillCardProps) {
-  const levelInfo = SKILL_LEVELS[skill.level]
+  //const levelInfo = SKILL_LEVELS[skill.level]
 
   return (
     <div
@@ -19,16 +19,16 @@ export function SkillCard({ skill, className }: SkillCardProps) {
     >
       <div className="flex items-center justify-between mb-2">
         <span className="font-medium text-foreground">{skill.name}</span>
-        <span className="text-xs text-muted-foreground">{levelInfo.label}</span>
+        {/* <span className="text-xs text-muted-foreground">{levelInfo.label}</span> */}
       </div>
 
       {/* Progress bar */}
-      <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+      {/* <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
         <div
           className="h-full bg-main rounded-full transition-all duration-500"
-          style={{ width: `${levelInfo.percentage}%` }}
+          // style={{ width: `${levelInfo.percentage}%` }}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

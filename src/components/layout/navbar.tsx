@@ -3,12 +3,10 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Moon, Sun, User } from "lucide-react"
+import { Menu, X, Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/src/hooks/use-theme"
-import { useAuthStore } from "@/src/stores/auth/auth.store"
 import { Container } from "@/src/components/ui/container"
-import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/src/utils/constants"
 
 const navLinks = [
@@ -23,7 +21,6 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname()
   const { theme, setTheme, isDark } = useTheme()
-  const { isLoggedIn, user } = useAuthStore()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -83,22 +80,6 @@ export function Navbar() {
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
 
-            {/* Auth */}
-            {/* {isLoggedIn ? (
-              <Link href={ROUTES.DASHBOARD}>
-                <Button variant="outline" size="sm" className="hidden sm:inline-flex bg-transparent">
-                  <User className="mr-2 h-4 w-4" />
-                  Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <Link href={ROUTES.LOGIN}>
-                <Button size="sm" className="hidden bg-main text-foreground hover:bg-main-dark sm:inline-flex">
-                  Login
-                </Button>
-              </Link>
-            )} */}
-
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -128,23 +109,6 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-
-              <div className="mt-2 pt-4 border-t border-border">
-                {isLoggedIn ? (
-                  <Link href={ROUTES.DASHBOARD}>
-                    <Button variant="outline" size="sm" className="w-full bg-transparent">
-                      <User className="mr-2 h-4 w-4" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link href={ROUTES.LOGIN}>
-                    <Button size="sm" className="w-full bg-main text-foreground hover:bg-main-dark">
-                      Login
-                    </Button>
-                  </Link>
-                )}
-              </div>
             </div>
           </Container>
         </div>

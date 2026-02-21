@@ -47,9 +47,9 @@ export function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="mt-16 grid grid-cols-3 gap-8 border-t border-border pt-8">
+          {/* <div className="mt-16 grid grid-cols-3 gap-8 border-t border-border pt-8">
             <div>
-              <div className="text-3xl font-bold text-main">5+</div>
+              <div className="text-3xl font-bold text-main">2+</div>
               <div className="text-sm text-muted-foreground">Years Experience</div>
             </div>
             <div>
@@ -60,7 +60,7 @@ export function HeroSection() {
               <div className="text-3xl font-bold text-main">30+</div>
               <div className="text-sm text-muted-foreground">Happy Clients</div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Container>
     </section>

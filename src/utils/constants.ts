@@ -7,16 +7,6 @@ export const ROUTES = {
   PROJECTS: "/projects",
   SERVICES: "/services",
   CONTACT: "/contact",
-  LOGIN: "/login",
-  REGISTER: "/register",
-  DASHBOARD: "/dashboard",
-  ADMIN_ABOUT: "/dashboard/about",
-  ADMIN_SKILLS: "/dashboard/skills",
-  ADMIN_PROJECTS: "/dashboard/projects",
-  ADMIN_SERVICES: "/dashboard/services",
-  ADMIN_MESSAGES: "/dashboard/messages",
-  ADMIN_EXPERIENCE: "/dashboard/experience",
-  ADMIN_CERTIFICATES: "/dashboard/certificates",
 } as const
 
 export const SKILL_LEVELS = {
@@ -40,6 +30,3 @@ export const SOCIAL_ICONS = [
 ] as const
 
 export const SERVICE_ICONS = ["code", "mobile", "design", "database", "cloud", "security", "ai", "analytics"] as const
-
-export const TOKEN_KEY = "portfolio_access_token"
-export const USER_KEY = "portfolio_user"
