@@ -9,6 +9,7 @@ import { SectionTitle } from "@/src/components/shared/section-title"
 import { ProjectCard } from "@/src/components/ui/project-card"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/src/utils/constants"
+import { StaggerContainer, StaggerItem, FadeIn } from "@/src/components/shared/motion-wrapper"
 
 export function ProjectsPreview() {
   const { data } = useQuery({
@@ -23,20 +24,24 @@ export function ProjectsPreview() {
       <Container>
         <SectionTitle title="Featured Projects" subtitle="Some of my recent work" />
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer staggerDelay={0.15} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <StaggerItem key={project.id}>
+              <ProjectCard project={project} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
-        <div className="mt-12 text-center">
-          <Link href={ROUTES.PROJECTS}>
-            <Button className="bg-main text-foreground hover:bg-main-dark" size="lg">
-              View All Projects
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
+        <FadeIn delay={0.3}>
+          <div className="mt-12 text-center">
+            <Link href={ROUTES.PROJECTS}>
+              <Button className="bg-main text-foreground hover:bg-main-dark" size="lg">
+                View All Projects
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </FadeIn>
       </Container>
     </section>
   )

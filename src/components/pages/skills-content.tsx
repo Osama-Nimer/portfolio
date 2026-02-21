@@ -6,6 +6,7 @@ import { Container } from "@/src/components/ui/container"
 import { SectionTitle } from "@/src/components/shared/section-title"
 import { SkillCard } from "@/src/components/ui/skill-card"
 import { PageLoader } from "@/src/components/shared/loading-spinner"
+import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
 
 export function SkillsContent() {
   const { data: skillsData, isLoading: skillsLoading } = useQuery({
@@ -35,17 +36,21 @@ export function SkillsContent() {
         <SectionTitle title="My Skills" subtitle="Technologies and tools I work with to build amazing products" />
 
         <div className="space-y-12">
-          {skillsByCategory.map((category) => (
-            <div key={category.id}>
-              <h3 className="text-xl font-semibold text-foreground mb-2">{category.name}</h3>
-              {category.description && <p className="text-muted-foreground mb-6">{category.description}</p>}
+          {skillsByCategory.map((category, index) => (
+            <FadeIn key={category.id} delay={index * 0.1}>
+              <div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{category.name}</h3>
+                {category.description && <p className="text-muted-foreground mb-6">{category.description}</p>}
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {category.skills.map((skill) => (
-                  <SkillCard key={skill.id} skill={skill} />
-                ))}
+                <StaggerContainer staggerDelay={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {category.skills.map((skill) => (
+                    <StaggerItem key={skill.id}>
+                      <SkillCard skill={skill} />
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
               </div>
-            </div>
+            </FadeIn>
           ))}
         </div>
       </Container>

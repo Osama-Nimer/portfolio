@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { useTheme } from "@/src/hooks/use-theme"
 import { Container } from "@/src/components/ui/container"
 import { ROUTES } from "@/src/utils/constants"
+import { motion, AnimatePresence } from "framer-motion"
 
 const navLinks = [
   { href: ROUTES.HOME, label: "Home" },
@@ -93,26 +94,40 @@ export function Navbar() {
       </Container>
 
       {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="border-t border-border bg-background md:hidden">
-          <Container>
-            <div className="flex flex-col gap-4 py-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-main",
-                    pathname === link.href ? "text-main" : "text-muted-foreground",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden border-t border-border bg-background md:hidden"
+          >
+            <Container>
+              <div className="flex flex-col gap-4 py-4">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.2 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "text-sm font-medium transition-colors hover:text-main",
+                        pathname === link.href ? "text-main" : "text-muted-foreground",
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </Container>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

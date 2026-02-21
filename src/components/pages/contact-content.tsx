@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useUIStore } from "@/src/stores/ui/ui.store"
 import { validateEmail, validateRequired } from "@/src/utils/validators"
 import type { MessageFormData } from "@/src/types/messages.types"
+import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
 
 export function ContactContent() {
   const { addToast } = useUIStore()
@@ -90,127 +91,139 @@ export function ContactContent() {
 
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Contact Info */}
-          <div>
-            <h3 className="text-xl font-semibold text-foreground mb-6">Contact Information</h3>
+          <FadeIn direction="left">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-6">Contact Information</h3>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                  <Mail className="h-5 w-5 text-main" />
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Email</p>
-                  <a href="mailto:hello@example.com" className="text-muted-foreground hover:text-main">
-                    osamanimer6@gmail.com
-                  </a>
-                </div>
-              </div>
+              <StaggerContainer staggerDelay={0.12} className="space-y-6">
+                <StaggerItem direction="left">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
+                      <Mail className="h-5 w-5 text-main" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Email</p>
+                      <a href="mailto:hello@example.com" className="text-muted-foreground hover:text-main">
+                        osamanimer6@gmail.com
+                      </a>
+                    </div>
+                  </div>
+                </StaggerItem>
 
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                  <Phone className="h-5 w-5 text-main" />
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Phone</p>
-                  <a href="tel:+1234567890" className="text-muted-foreground hover:text-main">
-                    +962 7 9698 3276
-                  </a>
-                </div>
-              </div>
+                <StaggerItem direction="left">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
+                      <Phone className="h-5 w-5 text-main" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Phone</p>
+                      <a href="tel:+1234567890" className="text-muted-foreground hover:text-main">
+                        +962 7 9698 3276
+                      </a>
+                    </div>
+                  </div>
+                </StaggerItem>
 
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-main" />
+                <StaggerItem direction="left">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-main" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Location</p>
+                      <p className="text-muted-foreground">Amman Jordan</p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              </StaggerContainer>
+
+              {/* Map placeholder */}
+              <FadeIn delay={0.4}>
+                <div className="mt-8 aspect-video rounded-xl overflow-hidden bg-muted">
+                  <img src="/san-francisco-map.png" alt="Location map" className="h-full w-full object-cover" />
                 </div>
-                <div>
-                  <p className="font-medium text-foreground">Location</p>
-                  <p className="text-muted-foreground">Amman Jordan</p>
-                </div>
-              </div>
+              </FadeIn>
             </div>
-
-            {/* Map placeholder */}
-            <div className="mt-8 aspect-video rounded-xl overflow-hidden bg-muted">
-              <img src="/san-francisco-map.png" alt="Location map" className="h-full w-full object-cover" />
-            </div>
-          </div>
+          </FadeIn>
 
           {/* Contact Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    className={errors.name ? "border-destructive" : ""}
-                  />
-                  {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+          <FadeIn direction="right" delay={0.2}>
+            <div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      className={errors.name ? "border-destructive" : ""}
+                    />
+                    {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="john@example.com"
+                      className={errors.email ? "border-destructive" : ""}
+                    />
+                    {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="subject">Subject</Label>
                   <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
                     onChange={handleChange}
-                    placeholder="john@example.com"
-                    className={errors.email ? "border-destructive" : ""}
+                    placeholder="Project Inquiry"
+                    className={errors.subject ? "border-destructive" : ""}
                   />
-                  {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                  {errors.subject && <p className="text-sm text-destructive">{errors.subject}</p>}
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  placeholder="Project Inquiry"
-                  className={errors.subject ? "border-destructive" : ""}
-                />
-                {errors.subject && <p className="text-sm text-destructive">{errors.subject}</p>}
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell me about your project..."
+                    rows={6}
+                    className={errors.message ? "border-destructive" : ""}
+                  />
+                  {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell me about your project..."
-                  rows={6}
-                  className={errors.message ? "border-destructive" : ""}
-                />
-                {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
-              </div>
-
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full bg-main text-foreground hover:bg-main-dark"
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? (
-                  "Sending..."
-                ) : (
-                  <>
-                    Send Message
-                    <Send className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </form>
-          </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-main text-foreground hover:bg-main-dark"
+                  disabled={mutation.isPending}
+                >
+                  {mutation.isPending ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+          </FadeIn>
         </div>
       </Container>
     </section>

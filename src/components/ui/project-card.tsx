@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { ExternalLink, Github } from "lucide-react"
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { BadgeCustom } from "./badge-custom"
 import type { Project } from "@/src/types/projects.types"
@@ -11,25 +14,30 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, className }: ProjectCardProps) {
   return (
-    <div
+    <motion.div
       className={cn(
         "group relative overflow-hidden rounded-lg border border-border bg-card transition-all hover:shadow-lg hover:border-main/50",
         className,
       )}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.2 }}
     >
       {/* Image */}
-      <div className="aspect-video overflow-hidden bg-muted">
+      <div className="aspect-video overflow-hidden bg-muted relative">
         {project.imageUrl ? (
           <img
             src={project.imageUrl || "/placeholder.svg"}
             alt={project.title}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full items-center justify-center">
             <span className="text-4xl font-bold text-main/30">{project.title[0]}</span>
           </div>
         )}
+
+        {/* Overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Featured badge */}
         {project.featured && (
@@ -90,6 +98,6 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
