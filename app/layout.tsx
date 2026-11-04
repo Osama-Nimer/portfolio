@@ -4,6 +4,7 @@ import { Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ToastContainer } from "@/src/components/shared/toast-container"
+import { KeepAlive } from "@/src/components/shared/keep-alive"
 import { THEME_SCRIPT } from "@/src/hooks/use-theme"
 import "./globals.css"
 
@@ -49,6 +50,7 @@ export default function RootLayout({
         <QueryProvider>
           {children}
           <ToastContainer />
+          <KeepAlive />
         </QueryProvider>
         <Analytics />
       </body>
