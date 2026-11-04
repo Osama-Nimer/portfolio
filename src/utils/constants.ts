@@ -36,5 +36,5 @@ export const SERVICE_ICONS = ["code", "mobile", "design", "database", "cloud", "
  * down after ~15 minutes without traffic. A cheap GET every 10 minutes keeps
  * it warm. Point KEEP_ALIVE_PATH at a health endpoint if the backend has one.
  */
-export const KEEP_ALIVE_PATH = "/tags"
+export const KEEP_ALIVE_PATH = "/skills"
 export const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000
