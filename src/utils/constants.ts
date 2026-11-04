@@ -30,3 +30,11 @@ export const SOCIAL_ICONS = [
 ] as const
 
 export const SERVICE_ICONS = ["code", "mobile", "design", "database", "cloud", "security", "ai", "analytics"] as const
+
+/**
+ * Keep-alive for the backend on Render's free tier, which spins the service
+ * down after ~15 minutes without traffic. A cheap GET every 10 minutes keeps
+ * it warm. Point KEEP_ALIVE_PATH at a health endpoint if the backend has one.
+ */
+export const KEEP_ALIVE_PATH = "/tags"
+export const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000
