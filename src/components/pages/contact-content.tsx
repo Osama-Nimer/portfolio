@@ -3,19 +3,27 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Mail, MapPin, Phone, Send } from "lucide-react"
+import { ArrowUpRight, Mail, MapPin, Phone, Send } from "lucide-react"
 import { useMutation } from "@tanstack/react-query"
 import { messagesService } from "@/src/services/api/messages.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useUIStore } from "@/src/stores/ui/ui.store"
 import { validateEmail, validateRequired } from "@/src/utils/validators"
 import type { MessageFormData } from "@/src/types/messages.types"
-import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { FadeIn } from "@/src/components/shared/motion-wrapper"
+import { PageHeader } from "@/src/components/shared/page-header"
+import { META, RingNode, pillClass } from "@/src/components/shared/motif"
+
+const contactRows = [
+  { icon: Mail, label: "Email", value: "osamanimer6@gmail.com", href: "mailto:osamanimer6@gmail.com" },
+  { icon: Phone, label: "Phone", value: "+962 7 9698 3276", href: "tel:+962796983276" },
+  { icon: MapPin, label: "Location", value: "Amman, Jordan" },
+]
+
+type Field = keyof MessageFormData
 
 export function ContactContent() {
   const { addToast } = useUIStore()
@@ -31,15 +39,15 @@ export function ContactContent() {
     mutationFn: (data: MessageFormData) => messagesService.create(data),
     onSuccess: () => {
       addToast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
+        title: "Message sent",
+        description: "Thanks for reaching out. I'll get back to you soon.",
         type: "success",
       })
       setFormData({ name: "", email: "", subject: "", message: "" })
     },
     onError: (error: Error) => {
       addToast({
-        title: "Failed to send message",
+        title: "Couldn't send your message",
         description: error.message,
         type: "error",
       })
@@ -84,148 +92,115 @@ export function ContactContent() {
     }
   }
 
+  const fieldProps = (name: Field) => ({
+    id: name,
+    name,
+    value: formData[name],
+    onChange: handleChange,
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `${name}-error` : undefined,
+  })
+
+  const fieldError = (name: Field) =>
+    errors[name] ? (
+      <p id={`${name}-error`} className="text-[13px] text-danger">
+        {errors[name]}
+      </p>
+    ) : null
+
   return (
-    <section className="py-20">
-      <Container>
-        <SectionTitle title="Get In Touch" subtitle="Have a question or want to work together? Drop me a message!" />
+    <>
+      <PageHeader
+        path="contact"
+        title="Let's talk"
+        muted="about your project"
+        lead="Have a question or something you want built? Send a message and I'll reply within a day."
+      />
 
-        <div className="grid gap-12 lg:grid-cols-2">
-          {/* Contact Info */}
-          <FadeIn direction="left">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-6">Contact Information</h3>
+      <section className="pb-8">
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8">
+            {/* Direct details */}
+            <FadeIn>
+              <div className="flex h-full flex-col rounded-xl border border-line bg-card">
+                <ul className="divide-y divide-line">
+                  {contactRows.map((row) => (
+                    <li key={row.label} className="flex items-center gap-4 px-6 py-5">
+                      <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-line-strong bg-foreground/[0.03] text-foreground">
+                        <row.icon className="size-[18px]" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className={META}>{row.label}</p>
+                        {row.href ? (
+                          <a
+                            href={row.href}
+                            className="group mt-1 inline-flex items-center gap-1 truncate text-[15px] text-foreground transition-opacity hover:opacity-70"
+                          >
+                            {row.value}
+                            <ArrowUpRight className="size-3.5 text-subtle" />
+                          </a>
+                        ) : (
+                          <p className="mt-1 text-[15px] text-foreground">{row.value}</p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
 
-              <StaggerContainer staggerDelay={0.12} className="space-y-6">
-                <StaggerItem direction="left">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                      <Mail className="h-5 w-5 text-main" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">Email</p>
-                      <a href="mailto:hello@example.com" className="text-muted-foreground hover:text-main">
-                        osamanimer6@gmail.com
-                      </a>
-                    </div>
-                  </div>
-                </StaggerItem>
-
-                <StaggerItem direction="left">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                      <Phone className="h-5 w-5 text-main" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">Phone</p>
-                      <a href="tel:+1234567890" className="text-muted-foreground hover:text-main">
-                        +962 7 9698 3276
-                      </a>
-                    </div>
-                  </div>
-                </StaggerItem>
-
-                <StaggerItem direction="left">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-main/10 flex items-center justify-center">
-                      <MapPin className="h-5 w-5 text-main" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">Location</p>
-                      <p className="text-muted-foreground">Amman Jordan</p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              </StaggerContainer>
-
-              {/* Map placeholder */}
-              <FadeIn delay={0.4}>
-                <div className="mt-8 aspect-video rounded-xl overflow-hidden bg-muted">
-                  <img src="/san-francisco-map.png" alt="Location map" className="h-full w-full object-cover" />
+                <div className="fx-dots mt-auto flex items-center gap-3 rounded-b-xl border-t border-line px-6 py-5">
+                  <RingNode live className="size-2 text-foreground" />
+                  <p className="text-sm text-muted-foreground">Currently taking on new projects.</p>
                 </div>
-              </FadeIn>
-            </div>
-          </FadeIn>
+              </div>
+            </FadeIn>
 
-          {/* Contact Form */}
-          <FadeIn direction="right" delay={0.2}>
-            <div>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid gap-6 sm:grid-cols-2">
+            {/* Form */}
+            <FadeIn delay={0.1}>
+              <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-line bg-card p-6 sm:p-8">
+                <div className="grid gap-5 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                      className={errors.name ? "border-destructive" : ""}
-                    />
-                    {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+                    <Input {...fieldProps("name")} autoComplete="name" placeholder="Jane Doe" />
+                    {fieldError("name")}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="john@example.com"
-                      className={errors.email ? "border-destructive" : ""}
-                    />
-                    {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                    <Input {...fieldProps("email")} type="email" autoComplete="email" placeholder="jane@company.com" />
+                    {fieldError("email")}
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="mt-5 space-y-2">
                   <Label htmlFor="subject">Subject</Label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder="Project Inquiry"
-                    className={errors.subject ? "border-destructive" : ""}
-                  />
-                  {errors.subject && <p className="text-sm text-destructive">{errors.subject}</p>}
+                  <Input {...fieldProps("subject")} placeholder="Project inquiry" />
+                  {fieldError("subject")}
                 </div>
 
-                <div className="space-y-2">
+                <div className="mt-5 space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell me about your project..."
-                    rows={6}
-                    className={errors.message ? "border-destructive" : ""}
-                  />
-                  {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
+                  <Textarea {...fieldProps("message")} placeholder="Tell me about your project…" rows={6} />
+                  {fieldError("message")}
                 </div>
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-main text-foreground hover:bg-main-dark"
-                  disabled={mutation.isPending}
-                >
-                  {mutation.isPending ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
+                <div className="mt-7 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="font-mono text-[12px] text-subtle">All fields are required.</p>
+                  <button type="submit" disabled={mutation.isPending} className={pillClass({ className: "group" })}>
+                    {mutation.isPending ? (
+                      "Sending…"
+                    ) : (
+                      <>
+                        Send message
+                        <Send className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
-            </div>
-          </FadeIn>
-        </div>
-      </Container>
-    </section>
+            </FadeIn>
+          </div>
+        </Container>
+      </section>
+    </>
   )
 }

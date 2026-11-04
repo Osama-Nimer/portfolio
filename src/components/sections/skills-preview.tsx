@@ -1,15 +1,12 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { skillsService } from "@/src/services/api/skills.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
-import { SkillCard } from "@/src/components/ui/skill-card"
-import { Button } from "@/components/ui/button"
+import { SectionHeader } from "@/src/components/shared/section-header"
 import { ROUTES } from "@/src/utils/constants"
-import { StaggerContainer, StaggerItem, FadeIn } from "@/src/components/shared/motion-wrapper"
+import { StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { SkillPath } from "@/src/components/ui/skill-path"
 
 export function SkillsPreview() {
   const { data: skillsData } = useQuery({
@@ -25,42 +22,29 @@ export function SkillsPreview() {
   const skills = skillsData?.data || []
   const categories = categoriesData?.data || []
 
-  // Group skills by category
   const skillsByCategory = categories.map((category) => ({
     ...category,
-    skills: skills.filter((skill) => skill.categoryId === category.id).slice(0, 4),
+    skills: skills.filter((skill) => skill.categoryId === category.id).slice(0, 5),
   }))
 
   return (
-    <section className="py-20">
+    <section className="py-24 sm:py-28">
       <Container>
-        <SectionTitle title="My Skills" subtitle="Technologies and tools I work with" />
+        <SectionHeader
+          title="The stack"
+          muted="I work in"
+          subtitle="Technologies and tools I reach for to ship reliable products, end to end."
+          href={ROUTES.SKILLS}
+          linkLabel="All skills"
+        />
 
-        <StaggerContainer staggerDelay={0.15} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {skillsByCategory.slice(0, 3).map((category) => (
             <StaggerItem key={category.id}>
-              <div className="rounded-xl border border-border bg-card p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-4">{category.name}</h3>
-                <div className="space-y-3">
-                  {category.skills.map((skill) => (
-                    <SkillCard key={skill.id} skill={skill} />
-                  ))}
-                </div>
-              </div>
+              <SkillPath name={category.name} skills={category.skills} />
             </StaggerItem>
           ))}
         </StaggerContainer>
-
-        <FadeIn delay={0.3}>
-          <div className="mt-12 text-center">
-            <Link href={ROUTES.SKILLS}>
-              <Button variant="outline" size="lg">
-                View All Skills
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
       </Container>
     </section>
   )

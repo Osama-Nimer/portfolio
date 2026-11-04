@@ -1,17 +1,20 @@
 "use client"
 
-import Link from "next/link"
-import { Download, MapPin, Calendar, Award } from "lucide-react"
+import { ArrowUpRight, Award, Download, MapPin } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { aboutService } from "@/src/services/api/about.service"
 import { experienceService } from "@/src/services/api/experience.service"
 import { Container } from "@/src/components/ui/container"
 import { SectionTitle } from "@/src/components/shared/section-title"
-import { Button } from "@/components/ui/button"
-import { BadgeCustom } from "@/src/components/ui/badge-custom"
 import { formatDateRange } from "@/src/utils/formatters"
 import { PageLoader } from "@/src/components/shared/loading-spinner"
 import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { PathDivider, RingNode, pillClass } from "@/src/components/shared/motif"
+import { ContactCta } from "@/src/components/sections/contact-cta"
+
+const FALLBACK_DESCRIPTION = `I'm a full-stack developer who builds modern web applications, from the database to the last pixel. My journey started with curiosity about how the web works and grew into a career solving real problems with clean, maintainable code.
+
+I work mostly in the JavaScript and TypeScript ecosystem: React, Next.js, Node.js and relational databases, and I care about performance, accessibility and code that the next person can read.`
 
 export function AboutContent() {
   const { data: aboutData, isLoading: aboutLoading } = useQuery({
@@ -43,159 +46,168 @@ export function AboutContent() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="py-20">
+      {/* Intro */}
+      <section className="relative isolate pb-20 pt-20 sm:pb-24 sm:pt-28">
+        <div aria-hidden="true" className="fx-glow pointer-events-none absolute inset-x-0 -top-24 -z-10 h-[560px]" />
         <Container>
-          <div className="grid gap-12 lg:grid-cols-2 items-center">
-            {/* Image */}
-            <FadeIn direction="left">
-              <div className="relative">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
-                  {about?.imageUrl ? (
-                    <img
-                      src={about.imageUrl || "/placeholder.svg"}
-                      alt="About me"
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <img src="/professional-developer-working.png" alt="About me" className="h-full w-full object-cover" />
-                  )}
-                </div>
-                <div className="absolute -bottom-6 -right-6 h-full w-full rounded-2xl border-2 border-main -z-10" />
+          <div className="grid items-start gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+            <FadeIn>
+              <p className="font-mono text-[13px] text-subtle">
+                <span className="text-foreground/60">~</span>/about
+              </p>
+              <h1 className="mt-5 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-[3.5rem]">
+                {about?.title || (
+                  <>
+                    Building the future, <span className="text-foreground/40">one line at a time</span>
+                  </>
+                )}
+              </h1>
+              <p className="mt-8 max-w-[62ch] whitespace-pre-line text-pretty text-[17px] leading-8 text-muted-foreground">
+                {about?.description || FALLBACK_DESCRIPTION}
+              </p>
+
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                {about?.resumeUrl && (
+                  <a href={about.resumeUrl} target="_blank" rel="noopener noreferrer" className={pillClass()}>
+                    <Download />
+                    Download resume
+                  </a>
+                )}
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={pillClass({ variant: "secondary", size: "sm", className: "group" })}
+                  >
+                    {link.platform}
+                    <ArrowUpRight className="text-subtle transition-colors group-hover:text-foreground" />
+                  </a>
+                ))}
               </div>
             </FadeIn>
 
-            {/* Content */}
-            <FadeIn direction="right" delay={0.2}>
-              <div>
-                <BadgeCustom variant="primary" className="mb-4">
-                  About Me
-                </BadgeCustom>
-                <h1 className="text-3xl font-bold text-foreground sm:text-4xl mb-6">
-                  {about?.title || "Building the Future, One Line at a Time"}
-                </h1>
-                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {about?.description ||
-                    `I'm a passionate full-stack developer with over 5 years of experience in building modern web applications. My journey in tech started with a curiosity about how things work on the internet, and it has evolved into a career where I get to solve complex problems and create meaningful digital experiences.
-
-I specialize in JavaScript/TypeScript ecosystems, with expertise in React, Next.js, Node.js, and various databases. I believe in writing clean, maintainable code and following best practices in software development.
-
-When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge through blog posts and community meetups.`}
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-4">
-                  {about?.resumeUrl && (
-                    <Link href={about.resumeUrl} target="_blank">
-                      <Button className="bg-main text-foreground hover:bg-main-dark">
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Resume
-                      </Button>
-                    </Link>
-                  )}
+            <FadeIn delay={0.1}>
+              <figure className="relative mx-auto max-w-sm lg:max-w-none">
+                <div className="overflow-hidden rounded-2xl border border-line bg-muted">
+                  <img
+                    src={about?.imageUrl || "/professional-developer-working.png"}
+                    alt="Osama Nimer"
+                    className="aspect-[4/5] h-full w-full object-cover"
+                  />
                 </div>
-              </div>
+                <figcaption className="absolute inset-x-3 bottom-3 flex items-center justify-between rounded-full border border-line bg-background/90 px-4 py-2 backdrop-blur">
+                  <span className="inline-flex items-center gap-2 text-[13px] text-foreground">
+                    <RingNode live className="size-2" />
+                    Open to work
+                  </span>
+                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-subtle">
+                    <MapPin className="size-3" />
+                    Amman, JO
+                  </span>
+                </figcaption>
+              </figure>
             </FadeIn>
           </div>
         </Container>
       </section>
 
-      {/* Experience Section */}
+      {/* Experience: one path, a ring node per role (the current one breathes). */}
       {experiences.length > 0 && (
-        <section className="py-20 bg-secondary/30">
-          <Container>
-            <SectionTitle title="Work Experience" subtitle="My professional journey" />
+        <>
+          <PathDivider />
+          <section className="py-24 sm:py-28">
+            <Container>
+              <SectionTitle title="Experience" muted="so far" subtitle="Where I've worked and what I've built along the way." />
 
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-0 top-0 bottom-0 w-px bg-border md:left-1/2" />
-
-              <div className="space-y-12">
+              <ol className="relative space-y-8">
+                <span aria-hidden="true" className="absolute bottom-3 left-[4px] top-3 w-px bg-line-strong md:left-[calc(12rem+4px)]" />
                 {experiences.map((exp, index) => (
-                  <FadeIn
-                    key={exp.id}
-                    direction={index % 2 === 0 ? "right" : "left"}
-                    delay={index * 0.1}
-                  >
-                    <div
-                      className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-                    >
-                      {/* Timeline dot */}
-                      <div className="absolute left-0 w-3 h-3 bg-main rounded-full -translate-x-1 md:left-1/2 md:-translate-x-1.5" />
-
-                      {/* Content */}
-                      <div className={`ml-8 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
-                        <div className="rounded-xl border border-border bg-card p-6">
-                          <div className="flex items-start justify-between mb-2">
-                            <h3 className="text-lg font-semibold text-foreground">{exp.position}</h3>
+                  <li key={exp.id}>
+                    <FadeIn delay={index * 0.05} className="relative grid gap-3 pl-8 md:grid-cols-[12rem_1fr] md:gap-0 md:pl-0">
+                      <span className="font-mono text-[12px] text-subtle md:pr-10 md:pt-1 md:text-right">
+                        {formatDateRange(exp.startDate, exp.endDate, exp.current)}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-0 top-1.5 md:left-[12rem]"
+                      >
+                        <RingNode live={exp.current} className={`size-[9px] ${exp.current ? "text-foreground" : "text-node"}`} />
+                      </span>
+                      <div className="md:pl-10">
+                        <div className="rounded-xl border border-line bg-card p-6 transition-colors hover:border-line-strong">
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                              <h3 className="text-lg font-semibold tracking-[-0.02em] text-foreground">{exp.position}</h3>
+                              <p className="mt-0.5 text-sm text-muted-foreground">
+                                {exp.company}
+                                {exp.location && <span className="text-subtle"> · {exp.location}</span>}
+                              </p>
+                            </div>
                             {exp.current && (
-                              <BadgeCustom variant="success" size="sm">
+                              <span className="rounded-full border border-line-strong px-2.5 py-0.5 font-mono text-[11px] text-foreground">
                                 Current
-                              </BadgeCustom>
-                            )}
-                          </div>
-                          <p className="text-main font-medium">{exp.company}</p>
-                          <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              {formatDateRange(exp.startDate, exp.endDate, exp.current)}
-                            </span>
-                            {exp.location && (
-                              <span className="flex items-center gap-1">
-                                <MapPin className="h-4 w-4" />
-                                {exp.location}
                               </span>
                             )}
                           </div>
-                          <p className="mt-4 text-sm text-muted-foreground">{exp.description}</p>
+                          {exp.description && (
+                            <p className="mt-4 whitespace-pre-line text-sm leading-6 text-muted-foreground">{exp.description}</p>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  </FadeIn>
+                    </FadeIn>
+                  </li>
                 ))}
-              </div>
-            </div>
-          </Container>
-        </section>
+              </ol>
+            </Container>
+          </section>
+        </>
       )}
 
-      {/* Certificates Section */}
+      {/* Certifications */}
       {certificates.length > 0 && (
-        <section className="py-20">
-          <Container>
-            <SectionTitle title="Certifications" subtitle="Professional credentials and achievements" />
+        <>
+          <PathDivider />
+          <section className="py-24 sm:py-28">
+            <Container>
+              <SectionTitle title="Certifications" muted="and credentials" />
 
-            <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {certificates.map((cert) => (
-                <StaggerItem key={cert.id}>
-                  <div className="rounded-xl border border-border bg-card p-6 hover:border-main/50 transition-colors">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0">
-                        <Award className="h-10 w-10 text-main" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">{cert.name}</h3>
-                        <p className="text-sm text-main">{cert.issuer}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          Issued: {new Date(cert.issueDate).toLocaleDateString()}
-                        </p>
+              <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {certificates.map((cert) => (
+                  <StaggerItem key={cert.id} className="h-full">
+                    <div className="flex h-full flex-col rounded-xl border border-line bg-card p-6 transition-colors hover:border-line-bold">
+                      <span className="inline-flex size-10 items-center justify-center rounded-lg border border-line-strong bg-foreground/[0.03] text-foreground">
+                        <Award className="size-[18px]" />
+                      </span>
+                      <h3 className="mt-5 font-semibold tracking-[-0.01em] text-foreground">{cert.name}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{cert.issuer}</p>
+                      <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                        <span className="font-mono text-[12px] text-subtle">
+                          {new Date(cert.issueDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                        </span>
                         {cert.credentialUrl && (
-                          <Link
+                          <a
                             href={cert.credentialUrl}
                             target="_blank"
-                            className="mt-2 inline-block text-sm text-main hover:underline"
+                            rel="noopener noreferrer"
+                            className="group inline-flex items-center gap-1 text-[13px] font-medium text-foreground transition-opacity hover:opacity-70"
                           >
-                            View Credential
-                          </Link>
+                            Credential
+                            <ArrowUpRight className="size-3.5" />
+                          </a>
                         )}
                       </div>
                     </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </Container>
-        </section>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            </Container>
+          </section>
+        </>
       )}
+
+      <ContactCta />
     </>
   )
 }

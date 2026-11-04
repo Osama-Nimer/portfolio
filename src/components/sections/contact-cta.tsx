@@ -1,81 +1,57 @@
-"use client"
-
 import Link from "next/link"
 import { ArrowRight, Mail } from "lucide-react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
 import { Container } from "@/src/components/ui/container"
 import { ROUTES } from "@/src/utils/constants"
-import { FadeIn, ScaleIn } from "@/src/components/shared/motion-wrapper"
+import { FadeIn } from "@/src/components/shared/motion-wrapper"
+import { RingNode, pillClass } from "@/src/components/shared/motif"
 
-export function ContactCta() {
+/** The closing call to action: a framed panel lit from above, with the motif's path across it. */
+export function ContactCta({
+  title = "Have a project in mind?",
+  muted = "Let's build it together",
+  lead = "Tell me what you're working on. I'll get back to you within a day with next steps.",
+}: {
+  title?: string
+  muted?: string
+  lead?: string
+}) {
   return (
-    <section className="py-20 bg-main/10 relative overflow-hidden">
-      {/* Animated background decorations */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-main/10"
-        animate={{ rotate: 360, scale: [1, 1.05, 1] }}
-        transition={{
-          rotate: { duration: 40, repeat: Infinity, ease: "linear" },
-          scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-        }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-dashed border-main/10"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      />
+    <section aria-labelledby="cta-heading" className="py-24 sm:py-28">
+      <Container>
+        <FadeIn>
+          <div className="relative isolate overflow-hidden rounded-3xl border border-line bg-card px-6 py-16 text-center sm:px-12 sm:py-20">
+            <div aria-hidden="true" className="fx-dots absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" />
+            <div aria-hidden="true" className="fx-glow absolute inset-0 -z-10" />
 
-      {/* Floating dots */}
-      <motion.div
-        className="absolute top-10 left-[20%] w-3 h-3 rounded-full bg-main/20"
-        animate={{ y: [0, -20, 0], opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-10 right-[25%] w-2 h-2 rounded-full bg-main/25"
-        animate={{ y: [0, -15, 0], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        className="absolute top-[30%] right-[10%] w-4 h-4 rounded-full bg-main/15"
-        animate={{ y: [0, -25, 0], x: [0, 10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
-
-      <Container size="md">
-        <div className="text-center relative z-10">
-          <ScaleIn>
-            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-main text-foreground animate-glow-pulse">
-              <Mail className="h-8 w-8" />
+            <div aria-hidden="true" className="mx-auto mb-10 flex max-w-xs items-center gap-3 text-line-bold">
+              <RingNode className="size-2" />
+              <div className="relative h-px flex-1 overflow-hidden bg-line-strong">
+                <span className="fx-travel absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-foreground/80 to-transparent" />
+              </div>
+              <RingNode live className="size-2 text-foreground" />
             </div>
-          </ScaleIn>
 
-          <FadeIn delay={0.15}>
-            <h2 className="text-3xl font-bold sm:text-4xl">
-              <span className="text-foreground">Let&apos;s </span>
-              <span className="animate-gradient-text">Work Together</span>
+            <h2
+              id="cta-heading"
+              className="mx-auto max-w-2xl text-balance text-[2rem] font-semibold leading-[1.08] tracking-[-0.035em] text-foreground sm:text-[2.75rem]"
+            >
+              <span className="block">{title}</span>
+              <span className="block text-foreground/40">{muted}</span>
             </h2>
-          </FadeIn>
+            <p className="mx-auto mt-6 max-w-md text-pretty text-base leading-7 text-muted-foreground">{lead}</p>
 
-          <FadeIn delay={0.3}>
-            <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
-              Have a project in mind? I&apos;d love to hear about it. Let&apos;s discuss how we can bring your ideas to
-              life.
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.45}>
-            <div className="mt-8">
-              <Link href={ROUTES.CONTACT}>
-                <Button size="lg" className="bg-main text-foreground hover:bg-main-dark group">
-                  Get In Touch
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Link href={ROUTES.CONTACT} className={pillClass({ size: "lg", className: "group" })}>
+                Get in touch
+                <ArrowRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
+              <a href="mailto:osamanimer6@gmail.com" className={pillClass({ variant: "secondary", size: "lg" })}>
+                <Mail />
+                Email me
+              </a>
             </div>
-          </FadeIn>
-        </div>
+          </div>
+        </FadeIn>
       </Container>
     </section>
   )

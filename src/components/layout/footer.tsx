@@ -1,15 +1,15 @@
-"use client"
-
 import Link from "next/link"
-import { Github, Linkedin, Instagram, Mail } from "lucide-react"
+import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react"
 import { Container } from "@/src/components/ui/container"
 import { ROUTES } from "@/src/utils/constants"
-import { FadeIn } from "@/src/components/shared/motion-wrapper"
+import { BrandWordmark } from "@/src/components/shared/brand"
+import { META } from "@/src/components/shared/motif"
 
 const footerLinks = [
-  { href: ROUTES.HOME, label: "Home" },
   { href: ROUTES.ABOUT, label: "About" },
+  { href: ROUTES.SKILLS, label: "Skills" },
   { href: ROUTES.PROJECTS, label: "Projects" },
+  { href: ROUTES.SERVICES, label: "Services" },
   { href: ROUTES.CONTACT, label: "Contact" },
 ]
 
@@ -20,65 +20,65 @@ const socialLinks = [
   { href: "mailto:osamanimer6@gmail.com", icon: Mail, label: "Email" },
 ]
 
+const LINK =
+  "rounded-sm text-sm text-muted-foreground transition-colors hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="mt-24 border-t border-line">
       <Container>
-        <FadeIn>
-          <div className="py-12">
-            <div className="grid gap-8 md:grid-cols-3">
-              {/* Brand */}
-              <div>
-                <Link href={ROUTES.HOME} className="text-2xl font-bold text-main">
-                  Osama Nimer
-                </Link>
-                <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-                  Building digital experiences with passion and precision. Let&apos;s create something amazing together.
-                </p>
-              </div>
-
-              {/* Quick Links */}
-              <div>
-                <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  {footerLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-main transition-colors">
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Social Links */}
-              <div>
-                <h3 className="font-semibold text-foreground mb-4">Connect</h3>
-                <div className="flex gap-4">
-                  {socialLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-full p-2 text-muted-foreground hover:bg-main hover:text-foreground transition-colors"
-                      aria-label={link.label}
-                    >
-                      <link.icon className="h-5 w-5" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Copyright */}
-            <div className="mt-12 pt-8 border-t border-border text-center">
-              <p className="text-sm text-muted-foreground">&copy;{currentYear} Osama Nimer. All rights reserved.</p>
-            </div>
+        <div className="grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <Link href={ROUTES.HOME} aria-label="Osama Nimer, home" className="inline-block">
+              <BrandWordmark />
+            </Link>
+            <p className="mt-5 max-w-xs text-sm leading-6 text-muted-foreground">
+              Full-stack developer building fast, reliable products for the web. Open to new projects.
+            </p>
           </div>
-        </FadeIn>
+
+          <div>
+            <h2 className={META}>Pages</h2>
+            <ul className="mt-5 space-y-3">
+              {footerLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={LINK}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className={META}>Elsewhere</h2>
+            <ul className="mt-5 space-y-3">
+              {socialLinks.map((link) => {
+                const external = !link.href.startsWith("mailto:")
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className={`${LINK} group inline-flex items-center gap-2.5`}
+                    >
+                      <link.icon className="size-4" />
+                      {link.label}
+                      <ArrowUpRight className="size-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono text-xs text-subtle">&copy; {year} Osama Nimer</p>
+          <p className="font-mono text-xs text-subtle">Amman, Jordan</p>
+        </div>
       </Container>
     </footer>
   )

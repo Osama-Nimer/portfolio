@@ -33,10 +33,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 p-8">
           <h2 className="text-xl font-semibold text-foreground">Something went wrong</h2>
           <p className="text-muted-foreground">{this.state.error?.message || "An unexpected error occurred"}</p>
-          <Button
-            onClick={() => this.setState({ hasError: false })}
-            className="bg-main text-foreground hover:bg-main-dark"
-          >
+          <Button onClick={() => this.setState({ hasError: false })}>
             Try again
           </Button>
         </div>

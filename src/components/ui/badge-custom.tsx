@@ -9,26 +9,26 @@ interface BadgeProps {
 }
 
 const variantClasses = {
-  default: "bg-muted text-muted-foreground",
-  primary: "bg-main text-foreground",
-  secondary: "bg-secondary text-secondary-foreground",
-  outline: "border border-main text-main bg-transparent",
-  success: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
-  warning: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100",
-  destructive: "bg-destructive/10 text-destructive",
+  default: "border-line bg-muted text-muted-foreground",
+  primary: "border-transparent bg-primary text-primary-foreground",
+  secondary: "border-line bg-secondary text-secondary-foreground",
+  outline: "border-line text-muted-foreground bg-transparent",
+  success: "border-transparent bg-success-muted text-success",
+  warning: "border-transparent bg-warning-muted text-warning",
+  destructive: "border-transparent bg-danger-muted text-danger",
 }
 
 const sizeClasses = {
-  sm: "px-2 py-0.5 text-xs",
-  md: "px-2.5 py-0.5 text-sm",
-  lg: "px-3 py-1 text-sm",
+  sm: "px-2 py-0.5 text-[11px]",
+  md: "px-2.5 py-0.5 text-xs",
+  lg: "px-3 py-1 text-[13px]",
 }
 
 export function BadgeCustom({ children, variant = "default", size = "md", className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full font-medium",
+        "inline-flex items-center gap-1 rounded-full border font-mono font-medium",
         variantClasses[variant],
         sizeClasses[size],
         className,

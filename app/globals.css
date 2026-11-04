@@ -3,105 +3,143 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Custom Portfolio Theme Colors */
-:root {
-  /* Portfolio Brand Colors */
-  --main: #b4a85d;
-  --main-light: #c9bf7a;
-  --main-dark: #9a9048;
-  --secondary-brand: #ececec;
-  --black-brand: #000000;
+/*
+ * Portfolio theme, aligned with the FixApi marketing brand: a black-and-white
+ * pair (near-black #010203, off-white #F3F4F7), hairline borders instead of
+ * shadows, pill buttons, and the ring-node motif. Dark is the default; the
+ * inline script in app/layout.tsx puts `light` or `dark` on <html> before the
+ * first paint, from the visitor's saved choice or their system setting.
+ *
+ * Contrast (WCAG 2.x, on --background):
+ *   dark:  foreground 18.9:1, muted-foreground 7.9:1, --subtle 5.3:1
+ *   light: foreground 18.6:1, muted-foreground 7.1:1, --subtle 5.1:1
+ */
+:root,
+.dark {
+  color-scheme: dark;
 
-  /* Semantic Design Tokens */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.72 0.1 95); /* main golden color */
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.93 0 0); /* secondary light gray */
-  --secondary-foreground: oklch(0.145 0 0);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.72 0.1 95);
-  --accent-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.9 0 0);
-  --ring: oklch(0.72 0.1 95);
-  --radius: 0.625rem;
+  --background: hsl(210 50% 1%); /* #010203 */
+  --foreground: hsl(225 20% 96%); /* #F3F4F7 */
+  --card: hsl(220 9% 4%);
+  --card-foreground: hsl(225 20% 96%);
+  --popover: hsl(220 9% 6%);
+  --popover-foreground: hsl(225 20% 96%);
+  --primary: hsl(225 20% 96%);
+  --primary-foreground: hsl(210 50% 1%);
+  --secondary: hsl(225 7% 9%);
+  --secondary-foreground: hsl(225 20% 96%);
+  --muted: hsl(225 7% 9%);
+  --muted-foreground: hsl(225 6% 64%);
+  --accent: hsl(225 7% 11%);
+  --accent-foreground: hsl(225 20% 96%);
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(225 8% 16.7%);
+  --input: hsl(225 7% 19%);
+  --ring: hsl(225 20% 96%);
+  --radius: 0.75rem;
 
-  /* Chart Colors */
-  --chart-1: oklch(0.72 0.1 95);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* Quietest text that still passes AA: captions, meta, dates. */
+  --subtle: hsl(225 5% 54%);
 
-  /* Sidebar */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.72 0.1 95);
-  --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: oklch(0.96 0 0);
-  --sidebar-accent-foreground: oklch(0.145 0 0);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.72 0.1 95);
+  /* Status hues: text/icon on the page, and a tinted surface. */
+  --success: hsl(142 69% 58%);
+  --success-muted: hsl(142 45% 11%);
+  --warning: hsl(30 100% 58%);
+  --warning-muted: hsl(38 60% 11%);
+  --danger: hsl(0 91% 71%);
+  --danger-muted: hsl(0 50% 13%);
+
+  /*
+   * Hairlines, solid rather than tints of the foreground, so a line reads the
+   * same on the page and on a card. Each step has the same contrast against
+   * the background in both themes.
+   */
+  --line-faint: hsl(225 8% 12.5%);
+  --line: hsl(225 8% 16.7%);
+  --line-strong: hsl(225 8% 22.7%);
+  --line-bold: hsl(225 8% 30.9%);
+  --node: hsl(225 8% 55.9%);
+
+  --glow: hsl(225 20% 96% / 0.09);
+  --selection: hsl(225 20% 96% / 0.22);
+
+  --chart-1: hsl(225 20% 96%);
+  --chart-2: hsl(225 6% 64%);
+  --chart-3: hsl(225 5% 45%);
+  --chart-4: hsl(225 8% 30.9%);
+  --chart-5: hsl(225 8% 22.7%);
+
+  --sidebar: hsl(220 9% 4%);
+  --sidebar-foreground: hsl(225 20% 96%);
+  --sidebar-primary: hsl(225 20% 96%);
+  --sidebar-primary-foreground: hsl(210 50% 1%);
+  --sidebar-accent: hsl(225 7% 11%);
+  --sidebar-accent-foreground: hsl(225 20% 96%);
+  --sidebar-border: hsl(225 8% 16.7%);
+  --sidebar-ring: hsl(225 20% 96%);
 }
 
-.dark {
-  /* Portfolio Brand Colors (same) */
-  --main: #b4a85d;
-  --main-light: #c9bf7a;
-  --main-dark: #9a9048;
-  --secondary-brand: #2a2a2a;
-  --black-brand: #ffffff;
+.light {
+  color-scheme: light;
 
-  /* Dark Mode Semantic Tokens */
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.16 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.75 0.1 95);
-  --primary-foreground: oklch(0.12 0 0);
-  --secondary: oklch(0.22 0 0);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.75 0.1 95);
-  --accent-foreground: oklch(0.12 0 0);
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.28 0 0);
-  --input: oklch(0.28 0 0);
-  --ring: oklch(0.75 0.1 95);
+  --background: hsl(225 20% 97%); /* #F5F6F9 */
+  --foreground: hsl(210 50% 4%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(210 50% 4%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(210 50% 4%);
+  --primary: hsl(210 50% 4%);
+  --primary-foreground: hsl(225 20% 97%);
+  --secondary: hsl(225 16% 93%);
+  --secondary-foreground: hsl(210 50% 4%);
+  --muted: hsl(225 16% 93%);
+  --muted-foreground: hsl(225 8% 34%);
+  --accent: hsl(225 16% 91%);
+  --accent-foreground: hsl(210 50% 4%);
+  --destructive: hsl(0 72% 42%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(225 8% 82.6%);
+  --input: hsl(225 12% 82%);
+  --ring: hsl(210 50% 4%);
+  --subtle: hsl(225 6% 43%);
 
-  /* Sidebar Dark */
-  --sidebar: oklch(0.14 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.75 0.1 95);
-  --sidebar-primary-foreground: oklch(0.12 0 0);
-  --sidebar-accent: oklch(0.22 0 0);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.28 0 0);
-  --sidebar-ring: oklch(0.75 0.1 95);
+  /* Status hues darkened to keep AA on white. */
+  --success: hsl(142 64% 28%);
+  --success-muted: hsl(142 50% 93%);
+  --warning: hsl(24 100% 30%);
+  --warning-muted: hsl(38 90% 93%);
+  --danger: hsl(0 72% 42%);
+  --danger-muted: hsl(0 85% 96%);
+
+  --line-faint: hsl(225 8% 87.5%);
+  --line: hsl(225 8% 82.6%);
+  --line-strong: hsl(225 8% 75%);
+  --line-bold: hsl(225 8% 64.5%);
+  --node: hsl(225 8% 38.5%);
+
+  --glow: hsl(0 0% 100% / 1);
+  --selection: hsl(220 90% 56% / 0.18);
+
+  --chart-1: hsl(210 50% 4%);
+  --chart-2: hsl(225 8% 34%);
+  --chart-3: hsl(225 6% 50%);
+  --chart-4: hsl(225 8% 64.5%);
+  --chart-5: hsl(225 8% 75%);
+
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(210 50% 4%);
+  --sidebar-primary: hsl(210 50% 4%);
+  --sidebar-primary-foreground: hsl(225 20% 97%);
+  --sidebar-accent: hsl(225 16% 91%);
+  --sidebar-accent-foreground: hsl(210 50% 4%);
+  --sidebar-border: hsl(225 8% 82.6%);
+  --sidebar-ring: hsl(210 50% 4%);
 }
 
 @theme inline {
-  --font-sans: "Inter", "Geist", system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
-
-  /* Theme Color Mapping */
-  --color-main: var(--main);
-  --color-main-light: var(--main-light);
-  --color-main-dark: var(--main-dark);
-  --color-secondary-brand: var(--secondary-brand);
-  --color-black-brand: var(--black-brand);
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -122,6 +160,21 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-subtle: var(--subtle);
+
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger: var(--danger);
+  --color-danger-muted: var(--danger-muted);
+
+  --color-line-faint: var(--line-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-bold: var(--line-bold);
+  --color-node: var(--node);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -145,41 +198,115 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    scrollbar-color: var(--line-strong) transparent;
+    scrollbar-width: thin;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  ::selection {
+    background-color: var(--selection);
   }
 
-  /* Custom scrollbar */
+  /* WebKit fallback; Chromium 121+ and Firefox use scrollbar-color above. */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
-
   ::-webkit-scrollbar-track {
-    @apply bg-secondary;
+    background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    @apply bg-main rounded-full;
+    background: var(--line-strong);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 9999px;
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-main-dark;
+    background-color: var(--line-bold);
   }
 }
 
-/* Animation classes */
+/* A dot field for panels and mock UI surfaces. */
+.fx-dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--foreground) 9%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Soft light falling from above. */
+.fx-glow {
+  background: radial-gradient(ellipse 60% 55% at 50% 0%, var(--glow), transparent 70%);
+}
+
+/* A short bright segment that travels along a hairline (section dividers). */
+@keyframes fx-travel {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    transform: translateX(400%);
+    opacity: 0;
+  }
+}
+
+.fx-travel {
+  animation: fx-travel 7s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+/* A slow breathing halo for "live" ring nodes. */
+@keyframes fx-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+.fx-breathe {
+  animation: fx-breathe 2.8s ease-out infinite;
+}
+
+/* A blinking caret for the typewriter and the terminal panel. */
+@keyframes fx-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.fx-caret {
+  animation: fx-caret 1s steps(1) infinite;
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out;
   }
-
   .animate-slide-up {
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
-
   .animate-scale-in {
-    animation: scaleIn 0.3s ease-out;
+    animation: scaleIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
@@ -195,7 +322,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -206,7 +333,7 @@
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
@@ -214,46 +341,18 @@
   }
 }
 
-/* Gradient text shimmer */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
+/* Honour the OS "reduce motion" setting; decorative loops are hidden outright. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  50% {
-    background-position: 100% 50%;
+  .fx-travel,
+  .fx-breathe {
+    display: none;
   }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient-text {
-  background: linear-gradient(
-    90deg,
-    var(--main) 0%,
-    var(--main-light) 25%,
-    #e0d48a 50%,
-    var(--main-light) 75%,
-    var(--main) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 4s ease-in-out infinite;
-}
-
-/* Glow pulse */
-@keyframes glow-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(180, 168, 93, 0.15);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(180, 168, 93, 0.3);
-  }
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
 }

@@ -3,10 +3,12 @@
 import { useQuery } from "@tanstack/react-query"
 import { skillsService } from "@/src/services/api/skills.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
-import { SkillCard } from "@/src/components/ui/skill-card"
+import { PageHeader } from "@/src/components/shared/page-header"
 import { PageLoader } from "@/src/components/shared/loading-spinner"
-import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { SkillPath } from "@/src/components/ui/skill-path"
+import { ContactCta } from "@/src/components/sections/contact-cta"
+import { EmptyState } from "@/src/components/shared/empty-state"
 
 export function SkillsContent() {
   const { data: skillsData, isLoading: skillsLoading } = useQuery({
@@ -19,41 +21,43 @@ export function SkillsContent() {
     queryFn: () => skillsService.getAllCategories(),
   })
 
-  if (skillsLoading || categoriesLoading) return <PageLoader />
-
   const skills = skillsData?.data || []
   const categories = categoriesData?.data || []
 
-  // Group skills by category
   const skillsByCategory = categories.map((category) => ({
     ...category,
     skills: skills.filter((skill) => skill.categoryId === category.id),
   }))
 
   return (
-    <section className="py-20">
-      <Container>
-        <SectionTitle title="My Skills" subtitle="Technologies and tools I work with to build amazing products" />
+    <>
+      <PageHeader
+        path="skills"
+        title="The stack"
+        muted="behind the work"
+        lead="Technologies and tools I use to design, build and ship products, grouped by where they sit in the stack."
+      />
 
-        <div className="space-y-12">
-          {skillsByCategory.map((category, index) => (
-            <FadeIn key={category.id} delay={index * 0.1}>
-              <div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">{category.name}</h3>
-                {category.description && <p className="text-muted-foreground mb-6">{category.description}</p>}
+      <section className="pb-8">
+        <Container>
+          {skillsLoading || categoriesLoading ? (
+            <PageLoader />
+          ) : skillsByCategory.length > 0 ? (
+            <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {skillsByCategory.map((category) => (
+                <StaggerItem key={category.id} className="h-full">
+                  <SkillPath name={category.name} description={category.description} skills={category.skills} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          ) : (
+            <EmptyState>No skills listed yet.</EmptyState>
+          )}
+        </Container>
+      </section>
 
-                <StaggerContainer staggerDelay={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  {category.skills.map((skill) => (
-                    <StaggerItem key={skill.id}>
-                      <SkillCard skill={skill} />
-                    </StaggerItem>
-                  ))}
-                </StaggerContainer>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </Container>
-    </section>
+      <ContactCta />
+    </>
   )
 }
+

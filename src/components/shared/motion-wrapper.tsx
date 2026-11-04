@@ -1,10 +1,11 @@
 "use client"
 
 import { type ReactNode } from "react"
-import { motion, type Variants } from "framer-motion"
+import { motion, useReducedMotion, type Variants } from "framer-motion"
 
-// ─── Shared viewport config ─────────────────────────────────────────
+// Short, quiet reveals: a small rise and a fade, on the brand's ease-out curve.
 const viewport = { once: true, amount: 0.2 }
+const EASE = [0.22, 1, 0.36, 1] as const
 
 // ─── FadeIn ─────────────────────────────────────────────────────────
 type Direction = "up" | "down" | "left" | "right"
@@ -18,26 +19,21 @@ interface FadeInProps {
 }
 
 const directionOffset: Record<Direction, { x: number; y: number }> = {
-  up: { x: 0, y: 40 },
-  down: { x: 0, y: -40 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
+  up: { x: 0, y: 16 },
+  down: { x: 0, y: -16 },
+  left: { x: 16, y: 0 },
+  right: { x: -16, y: 0 },
 }
 
-export function FadeIn({
-  children,
-  direction = "up",
-  delay = 0,
-  duration = 0.5,
-  className,
-}: FadeInProps) {
+export function FadeIn({ children, direction = "up", delay = 0, duration = 0.6, className }: FadeInProps) {
+  const reduce = useReducedMotion()
   const offset = directionOffset[direction]
   return (
     <motion.div
-      initial={{ opacity: 0, x: offset.x, y: offset.y }}
+      initial={reduce ? false : { opacity: 0, x: offset.x, y: offset.y }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={viewport}
-      transition={{ duration, delay, ease: "easeOut" }}
+      transition={{ duration, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -54,12 +50,13 @@ interface ScaleInProps {
 }
 
 export function ScaleIn({ children, delay = 0, duration = 0.5, className }: ScaleInProps) {
+  const reduce = useReducedMotion()
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={reduce ? false : { opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={viewport}
-      transition={{ duration, delay, ease: "easeOut" }}
+      transition={{ duration, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -76,18 +73,10 @@ interface StaggerContainerProps {
 
 const containerVariants = (staggerDelay: number): Variants => ({
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: staggerDelay,
-    },
-  },
+  visible: { transition: { staggerChildren: staggerDelay } },
 })
 
-export function StaggerContainer({
-  children,
-  staggerDelay = 0.1,
-  className,
-}: StaggerContainerProps) {
+export function StaggerContainer({ children, staggerDelay = 0.08, className }: StaggerContainerProps) {
   return (
     <motion.div
       variants={containerVariants(staggerDelay)}
@@ -107,42 +96,18 @@ interface StaggerItemProps {
   className?: string
 }
 
-const itemVariants = (direction: Direction): Variants => {
+const itemVariants = (direction: Direction, reduce: boolean): Variants => {
   const offset = directionOffset[direction]
   return {
-    hidden: { opacity: 0, x: offset.x, y: offset.y },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
+    hidden: reduce ? { opacity: 1 } : { opacity: 0, x: offset.x, y: offset.y },
+    visible: { opacity: 1, x: 0, y: 0, transition: { duration: 0.6, ease: EASE } },
   }
 }
 
 export function StaggerItem({ children, direction = "up", className }: StaggerItemProps) {
+  const reduce = useReducedMotion() ?? false
   return (
-    <motion.div variants={itemVariants(direction)} className={className}>
-      {children}
-    </motion.div>
-  )
-}
-
-// ─── Float (subtle infinite bob for decorative elements) ────────────
-interface FloatProps {
-  children: ReactNode
-  className?: string
-  yRange?: number
-  duration?: number
-}
-
-export function Float({ children, className, yRange = 20, duration = 6 }: FloatProps) {
-  return (
-    <motion.div
-      animate={{ y: [0, -yRange, 0] }}
-      transition={{ duration, repeat: Infinity, ease: "easeInOut" }}
-      className={className}
-    >
+    <motion.div variants={itemVariants(direction, reduce)} className={className}>
       {children}
     </motion.div>
   )
