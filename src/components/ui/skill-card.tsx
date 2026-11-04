@@ -1,8 +1,4 @@
-"use client"
-
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
-import { SKILL_LEVELS } from "@/src/utils/constants"
 import type { Skill } from "@/src/types/skills.types"
 
 interface SkillCardProps {
@@ -10,19 +6,20 @@ interface SkillCardProps {
   className?: string
 }
 
+/** One skill: a hairlined row with a ring node, like a node on the motif's path. */
 export function SkillCard({ skill, className }: SkillCardProps) {
   return (
-    <motion.div
+    <div
       className={cn(
-        "rounded-lg border border-border bg-card p-4 transition-all hover:shadow-md hover:border-main/50",
+        "group flex items-center gap-3 rounded-lg border border-line bg-card px-4 py-3 transition-colors duration-200 hover:border-line-bold",
         className,
       )}
-      whileHover={{ y: -3, scale: 1.02 }}
-      transition={{ duration: 0.2 }}
     >
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-medium text-foreground">{skill.name}</span>
-      </div>
-    </motion.div>
+      <span
+        aria-hidden="true"
+        className="size-2 shrink-0 rounded-full border-[1.5px] border-node transition-colors group-hover:border-foreground group-hover:bg-foreground"
+      />
+      <span className="text-sm font-medium text-foreground">{skill.name}</span>
+    </div>
   )
 }

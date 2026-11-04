@@ -43,12 +43,12 @@ export function Modal({ isOpen, onClose, title, children, size = "md", className
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal content */}
       <div
         className={cn(
-          "relative z-10 w-full mx-4 rounded-lg bg-card p-6 shadow-xl animate-scale-in",
+          "relative z-10 w-full mx-4 rounded-2xl border border-line-strong bg-card p-6 animate-scale-in",
           sizeClasses[size],
           className,
         )}

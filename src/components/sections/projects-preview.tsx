@@ -1,15 +1,12 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { projectsService } from "@/src/services/api/projects.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
+import { SectionHeader } from "@/src/components/shared/section-header"
 import { ProjectCard } from "@/src/components/ui/project-card"
-import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/src/utils/constants"
-import { StaggerContainer, StaggerItem, FadeIn } from "@/src/components/shared/motion-wrapper"
+import { StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
 
 export function ProjectsPreview() {
   const { data } = useQuery({
@@ -20,28 +17,23 @@ export function ProjectsPreview() {
   const projects = data?.data?.slice(0, 3) || []
 
   return (
-    <section className="py-20 bg-secondary/30">
+    <section className="py-24 sm:py-28">
       <Container>
-        <SectionTitle title="Featured Projects" subtitle="Some of my recent work" />
+        <SectionHeader
+          title="Selected work"
+          muted="shipped and running"
+          subtitle="A few recent projects, from first commit to production."
+          href={ROUTES.PROJECTS}
+          linkLabel="All projects"
+        />
 
-        <StaggerContainer staggerDelay={0.15} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <StaggerItem key={project.id}>
+            <StaggerItem key={project.id} className="h-full">
               <ProjectCard project={project} />
             </StaggerItem>
           ))}
         </StaggerContainer>
-
-        <FadeIn delay={0.3}>
-          <div className="mt-12 text-center">
-            <Link href={ROUTES.PROJECTS}>
-              <Button className="bg-main text-foreground hover:bg-main-dark" size="lg">
-                View All Projects
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
       </Container>
     </section>
   )

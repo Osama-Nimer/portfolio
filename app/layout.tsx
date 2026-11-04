@@ -1,26 +1,37 @@
 import type React from "react"
-import type { Metadata } from "next"
-import { Inter, Geist_Mono } from "next/font/google"
+import type { Metadata, Viewport } from "next"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ToastContainer } from "@/src/components/shared/toast-container"
+import { THEME_SCRIPT } from "@/src/hooks/use-theme"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
+// Inter carries all UI text; JetBrains Mono is for code, tags, dates and meta.
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" })
 
 export const metadata: Metadata = {
-  title: "Portfolio | Professional Developer",
+  title: {
+    default: "Osama Nimer | Full-Stack Developer",
+    template: "%s | Osama Nimer",
+  },
   description:
-    "Professional portfolio showcasing projects, skills, and services. Building digital experiences with passion and precision.",
-  keywords: ["portfolio", "developer", "web development", "projects", "skills"],
-  authors: [{ name: "Portfolio Owner" }],
+    "Portfolio of Osama Nimer, a full-stack developer building fast, reliable web products with React, Next.js, Node.js and TypeScript.",
+  keywords: ["portfolio", "developer", "full-stack", "web development", "projects", "skills"],
+  authors: [{ name: "Osama Nimer" }],
   openGraph: {
-    title: "Portfolio | Professional Developer",
-    description: "Professional portfolio showcasing projects, skills, and services.",
+    title: "Osama Nimer | Full-Stack Developer",
+    description: "Projects, skills and services from full-stack developer Osama Nimer.",
     type: "website",
   },
-    generator: 'v0.app'
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#010203" },
+    { media: "(prefers-color-scheme: light)", color: "#F5F6F9" },
+  ],
 }
 
 export default function RootLayout({
@@ -29,8 +40,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}>
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+      <head>
+        {/* Picks light or dark before the first paint, so nobody sees a flash of the wrong theme. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen font-sans antialiased`}>
         <QueryProvider>
           {children}
           <ToastContainer />

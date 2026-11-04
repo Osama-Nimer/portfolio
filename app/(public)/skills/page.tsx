@@ -3,7 +3,7 @@ import { SkillsContent } from "@/src/components/pages/skills-content"
 import { PageLoader } from "@/src/components/shared/loading-spinner"
 
 export const metadata = {
-  title: "Skills | Portfolio",
+  title: "Skills",
   description: "Explore my technical skills and expertise in various technologies and tools.",
 }
 

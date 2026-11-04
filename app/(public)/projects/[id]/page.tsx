@@ -3,7 +3,7 @@ import { ProjectDetailContent } from "@/src/components/pages/project-detail-cont
 import { PageLoader } from "@/src/components/shared/loading-spinner"
 
 export const metadata = {
-  title: "Project Details | Portfolio",
+  title: "Project",
   description: "View detailed information about this project.",
 }
 

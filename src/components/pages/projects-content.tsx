@@ -4,11 +4,15 @@ import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { projectsService } from "@/src/services/api/projects.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
+import { PageHeader } from "@/src/components/shared/page-header"
 import { ProjectCard } from "@/src/components/ui/project-card"
 import { PageLoader } from "@/src/components/shared/loading-spinner"
 import { cn } from "@/lib/utils"
-import { FadeIn, StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
+import { EmptyState } from "@/src/components/shared/empty-state"
+
+const FILTER =
+  "rounded-full border px-3.5 py-1.5 font-mono text-[12px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 
 export function ProjectsContent() {
   const [selectedTag, setSelectedTag] = useState<number | null>(null)
@@ -23,62 +27,60 @@ export function ProjectsContent() {
     queryFn: () => projectsService.getAllTags(),
   })
 
-  if (projectsLoading) return <PageLoader />
-
   const projects = projectsData?.data || []
   const tags = tagsData?.data || []
+  const filters = [{ id: null as number | null, name: "All" }, ...tags.map((t) => ({ id: t.id as number | null, name: t.name }))]
 
   return (
-    <section className="py-20">
-      <Container>
-        <SectionTitle title="My Projects" subtitle="A collection of my work and side projects" />
-
-        {/* Filter by tags */}
+    <>
+      <PageHeader
+        path="projects"
+        title="Selected work"
+        muted="and side projects"
+        lead="Products, tools and experiments I've designed and built, from first commit to production."
+      >
         {tags.length > 0 && (
-          <FadeIn>
-            <div className="mb-12 flex flex-wrap justify-center gap-2">
-              <button
-                onClick={() => setSelectedTag(null)}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-                  selectedTag === null ? "bg-main text-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80",
-                )}
-              >
-                All
-              </button>
-              {tags.map((tag) => (
+          <div role="group" aria-label="Filter by technology" className="mt-10 flex flex-wrap gap-2">
+            {filters.map((f) => {
+              const active = selectedTag === f.id
+              return (
                 <button
-                  key={tag.id}
-                  onClick={() => setSelectedTag(tag.id)}
+                  key={f.id ?? "all"}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedTag(f.id)}
                   className={cn(
-                    "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-                    selectedTag === tag.id
-                      ? "bg-main text-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80",
+                    FILTER,
+                    active
+                      ? "border-transparent bg-primary text-primary-foreground"
+                      : "border-line text-muted-foreground hover:border-line-bold hover:text-foreground",
                   )}
                 >
-                  {tag.name}
+                  {f.name}
                 </button>
-              ))}
-            </div>
-          </FadeIn>
-        )}
-
-        {/* Projects grid */}
-        {projects.length > 0 ? (
-          <StaggerContainer staggerDelay={0.1} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <StaggerItem key={project.id}>
-                <ProjectCard project={project} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No projects found.</p>
+              )
+            })}
           </div>
         )}
-      </Container>
-    </section>
+      </PageHeader>
+
+      <section>
+        <Container>
+          {projectsLoading ? (
+            <PageLoader />
+          ) : projects.length > 0 ? (
+            <StaggerContainer key={selectedTag ?? "all"} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => (
+                <StaggerItem key={project.id} className="h-full">
+                  <ProjectCard project={project} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          ) : (
+            <EmptyState>No projects match this filter.</EmptyState>
+          )}
+        </Container>
+      </section>
+    </>
   )
 }

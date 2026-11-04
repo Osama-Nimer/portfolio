@@ -2,99 +2,65 @@
 
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Container } from "@/src/components/ui/container"
 import { ROUTES } from "@/src/utils/constants"
-import { FadeIn, Float } from "@/src/components/shared/motion-wrapper"
+import { FadeIn } from "@/src/components/shared/motion-wrapper"
 import { TypeWriter } from "@/src/components/shared/type-writer"
-import { ParticleGrid, GeometricShapes, AnimatedCodeBlock, GradientOrb } from "@/src/components/shared/animated-graphics"
+import { AnimatedCodeBlock } from "@/src/components/shared/animated-graphics"
+import { StatusPill, pillClass } from "@/src/components/shared/motif"
 
 export function HeroSection() {
+  // Fills the screen below the floating nav on load; grows if the content needs more.
   return (
-    <section className="relative overflow-hidden py-20 sm:py-32 min-h-[90vh] flex items-center">
-      {/* Background decorations */}
-      <div className="absolute inset-0 -z-10">
-        {/* Particle grid */}
-        <ParticleGrid className="absolute inset-0" particleCount={35} />
-
-        {/* Gradient orbs */}
-        <Float yRange={30} duration={8}>
-          <GradientOrb className="absolute -top-20 -right-20" size="w-[500px] h-[500px]" />
-        </Float>
-        <Float yRange={20} duration={10}>
-          <GradientOrb className="absolute -bottom-20 -left-20" size="w-[400px] h-[400px]" />
-        </Float>
-
-        {/* Geometric shapes */}
-        <GeometricShapes className="absolute inset-0" />
-      </div>
+    <section aria-labelledby="hero-heading" className="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-center">
+      <div aria-hidden="true" className="fx-glow pointer-events-none absolute inset-x-0 -top-24 -z-10 h-[720px]" />
 
       <Container>
-        <div className="grid gap-12 lg:grid-cols-2 items-center">
-          {/* Text Content */}
+        <div className="grid items-center gap-14 py-16 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:py-20">
           <div className="text-center lg:text-left">
-            {/* Badge */}
-            <FadeIn delay={0.1}>
-              <div className="mb-6 inline-flex items-center rounded-full border border-main/30 bg-main/10 px-4 py-1.5 animate-glow-pulse">
-                <span className="relative flex h-2 w-2 mr-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-main opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-main" />
-                </span>
-                <span className="text-sm font-medium text-main">Available for new projects</span>
-              </div>
+            <FadeIn delay={0.05}>
+              <StatusPill>Available for new projects</StatusPill>
             </FadeIn>
 
-            {/* Heading with gradient text */}
-            <FadeIn delay={0.25}>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                Building Digital{" "}
-                <span className="animate-gradient-text">Experiences</span>{" "}
-                That Matter
+            <FadeIn delay={0.15}>
+              <h1
+                id="hero-heading"
+                className="mt-8 text-balance text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.04em] text-foreground sm:text-6xl lg:text-[4.25rem]"
+              >
+                <span className="block">Building products</span>
+                <span className="block text-foreground/40">that just work</span>
               </h1>
             </FadeIn>
 
-            {/* Typewriter */}
-            <FadeIn delay={0.4}>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                I&apos;m a passionate{" "}
+            <FadeIn delay={0.25}>
+              <p className="mx-auto mt-7 max-w-[34rem] text-pretty text-[17px] leading-7 text-muted-foreground sm:text-lg sm:leading-8 lg:mx-0">
+                I&apos;m Osama, a{" "}
                 <TypeWriter
-                  words={["Full-Stack Developer", "Problem Solver", "Creative Thinker", "Backend", "Frontend"]}
-                  typingSpeed={80}
-                  deletingSpeed={50}
+                  words={["full-stack developer", "backend engineer", "frontend engineer", "problem solver"]}
+                  typingSpeed={70}
+                  deletingSpeed={40}
                   pauseDuration={2000}
-                  className="text-main font-semibold"
-                />{" "}
-              </p>
-              <p className="mt-2 text-base text-muted-foreground/80">
-                crafting beautiful, functional, and user-centered digital experiences.
-                Let&apos;s turn your vision into reality.
+                  className="font-medium text-foreground"
+                />
+                <br className="hidden sm:block" /> crafting fast, reliable and user-centred web experiences.
               </p>
             </FadeIn>
 
-            {/* CTAs */}
-            <FadeIn delay={0.55}>
-              <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                <Link href={ROUTES.PROJECTS}>
-                  <Button size="lg" className="bg-main text-foreground hover:bg-main-dark group">
-                    View My Work
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
+            <FadeIn delay={0.35}>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <Link href={ROUTES.PROJECTS} className={pillClass({ size: "lg", className: "group" })}>
+                  View my work
+                  <ArrowRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
-                <Link href={ROUTES.CONTACT}>
-                  <Button size="lg" variant="outline" className="group">
-                    Get In Touch
-                    <ArrowRight className="ml-2 h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
-                  </Button>
+                <Link href={ROUTES.CONTACT} className={pillClass({ variant: "secondary", size: "lg" })}>
+                  Get in touch
                 </Link>
               </div>
             </FadeIn>
           </div>
 
-          {/* Animated Code Block */}
-          <FadeIn direction="right" delay={0.3}>
-            <div className="hidden lg:block">
-              <AnimatedCodeBlock />
-            </div>
+          <FadeIn delay={0.3} className="mx-auto w-full max-w-xl lg:max-w-none">
+            <AnimatedCodeBlock />
           </FadeIn>
         </div>
       </Container>

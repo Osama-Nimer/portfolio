@@ -1,15 +1,12 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { servicesService } from "@/src/services/api/services.service"
 import { Container } from "@/src/components/ui/container"
-import { SectionTitle } from "@/src/components/shared/section-title"
+import { SectionHeader } from "@/src/components/shared/section-header"
 import { ServiceCard } from "@/src/components/ui/service-card"
-import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/src/utils/constants"
-import { StaggerContainer, StaggerItem, FadeIn } from "@/src/components/shared/motion-wrapper"
+import { StaggerContainer, StaggerItem } from "@/src/components/shared/motion-wrapper"
 
 export function ServicesPreview() {
   const { data } = useQuery({
@@ -20,28 +17,23 @@ export function ServicesPreview() {
   const services = data?.data?.slice(0, 4) || []
 
   return (
-    <section className="py-20">
+    <section className="py-24 sm:py-28">
       <Container>
-        <SectionTitle title="My Services" subtitle="What I can do for you" />
+        <SectionHeader
+          title="How I can help"
+          muted="from idea to launch"
+          subtitle="Focused services for teams and founders who need it built properly."
+          href={ROUTES.SERVICES}
+          linkLabel="All services"
+        />
 
-        <StaggerContainer staggerDelay={0.12} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => (
-            <StaggerItem key={service.id}>
-              <ServiceCard service={service} />
+        <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {services.map((service, i) => (
+            <StaggerItem key={service.id} className="h-full">
+              <ServiceCard service={service} index={i} />
             </StaggerItem>
           ))}
         </StaggerContainer>
-
-        <FadeIn delay={0.3}>
-          <div className="mt-12 text-center">
-            <Link href={ROUTES.SERVICES}>
-              <Button variant="outline" size="lg">
-                View All Services
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
       </Container>
     </section>
   )

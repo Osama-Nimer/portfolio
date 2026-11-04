@@ -78,7 +78,7 @@ export function TypeWriter({
       <motion.span
         animate={{ opacity: [1, 0] }}
         transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-        className="inline-block w-[3px] h-[1em] bg-main ml-0.5 align-middle"
+        className="ml-0.5 inline-block h-[1em] w-[2px] bg-foreground align-middle"
       />
     </span>
   )
